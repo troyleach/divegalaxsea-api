@@ -10,28 +10,24 @@ class API::V1::UsersController < ApplicationController
 
   def show
     user = User.find(params[:id])
-    render json: user, serializer: UserSerializer, adapter: :json_api, status: 200
+    render json: user, adapter: :json_api, status: 200
   end
 
   def create
     user = User.new(user_params)
-    if user.save!
-      render json: user, serializer: UserSerializer, adapter: :json_api, status: 200
-    end
+    render json: user, adapter: :json_api, status: 200 if user.save!
   end
 
   def update
     user = User.find(params[:id])
     if user.update(user_params)
-      render json: user, serializer: UserSerializer, adapter: :json_api, status: 200
+      render json: user, adapter: :json_api, status: 200
     end
   end
 
   def destroy
     user = User.find(params[:id])
-    if user.destroy!
-      render json: user, serializer: UserSerializer, adapter: :json_api, status: 200
-    end
+    render json: user, adapter: :json_api, status: 200 if user.destroy!
   end
 
   private
