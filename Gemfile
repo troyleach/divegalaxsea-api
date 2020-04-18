@@ -38,7 +38,11 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'pry', '~> 0.12.2'
   # Create fake data
+  gem 'database_cleaner'
+  gem 'factory_bot_rails'
   gem 'faker', git: 'https://github.com/faker-ruby/faker.git', branch: 'master'
+  gem 'rspec-rails', '~> 4.0.0.beta'
+  gem 'shoulda-matchers'
 end
 
 group :development do
