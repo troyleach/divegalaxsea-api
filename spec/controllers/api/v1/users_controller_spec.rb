@@ -18,7 +18,7 @@ RSpec.describe API::V1::UsersController, type: :controller do
 
     it 'returns users' do
       expect(json).not_to be_empty
-      expect(json['data'].size).to eq(5)
+      expect(json['users'].size).to eq(5)
     end
 
     it 'returns status code 200' do
@@ -31,9 +31,9 @@ RSpec.describe API::V1::UsersController, type: :controller do
     before { get :show, params: { id: user_id } }
 
     context 'when the record exists' do
-      it 'returns the todo' do
+      it 'returns the user' do
         expect(json).not_to be_empty
-        expect(json['data']['id']).to eq(user_id.to_s)
+        expect(json['user']['id']).to eq(user_id)
       end
 
       it 'returns status code 200' do
@@ -49,7 +49,7 @@ RSpec.describe API::V1::UsersController, type: :controller do
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find User/)
+        expect(json['errors'][0]['title']).to match('Could not find user')
       end
     end
   end
@@ -67,7 +67,7 @@ RSpec.describe API::V1::UsersController, type: :controller do
       before { post :create, params: valid_attributes }
 
       it 'creates a user' do
-        expect(json['data']['attributes']['first_name']).to eq('Test')
+        expect(json['user']['first_name']).to eq('Test')
       end
 
       it 'returns status code 201' do
@@ -84,11 +84,11 @@ RSpec.describe API::V1::UsersController, type: :controller do
       before { post :create, params: invalid_attributes }
 
       it 'returns status code 422' do
-        expect(response).to have_http_status(422)
+        expect(response).to have_http_status(400)
       end
 
       it 'returns a validation failure message' do
-        expect(json['email'])
+        expect(json['errors'][0]['detail'])
           .to include("can't be blank")
       end
     end
@@ -96,14 +96,13 @@ RSpec.describe API::V1::UsersController, type: :controller do
 
   # Test suite for PUT /todos/:id
   describe 'PUT /users/:id' do
-    let(:valid_attributes) do
-      {
-        id: user_id,
-        user: { first_name: 'Changed' }
-      }
-    end
-
     context 'when the record exists' do
+      let(:valid_attributes) do
+        {
+          id: user_id,
+          user: { first_name: 'Changed' }
+        }
+      end
       before { put :update, params: valid_attributes }
 
       it 'updates the record' do
@@ -111,18 +110,44 @@ RSpec.describe API::V1::UsersController, type: :controller do
         expect(updated_user.first_name).to eq(valid_attributes[:user][:first_name])
       end
 
+      it 'Expect correct response message' do
+        expect(json['message']).to eq('User successfully updated')
+      end
+
       it 'returns status code 204' do
         expect(response).to have_http_status(204)
+      end
+    end
+
+    context 'Record does not exist' do
+      let(:inValid_attributes) do
+        {
+          id: 999,
+          user: { first_name: 'Changed' }
+        }
+      end
+      before { put :update, params: inValid_attributes }
+
+      it 'Returns an error' do
+        expect(json['errors'][0]['title']).to eq('Could not find user 999')
+      end
+
+      it 'returns correct status code' do
+        expect(response).to have_http_status(404)
       end
     end
   end
 
   describe 'DELETE /users/:id' do
-    before { delete :delete, params: { id: user_id } }
+    it 'deletes the user' do
+      expect do
+        delete :destroy, params: { id: user_id }
+      end.to change(User, :count).by(-1)
+    end
 
-    it 'returns status code 204' do
+    it 'returns status code 200' do
       # check to make sure the records are one less. I think there is a method to do this
-      expect(response).to have_http_status(204)
+      expect(response).to have_http_status(200)
     end
   end
 end

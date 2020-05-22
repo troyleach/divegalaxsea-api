@@ -7,29 +7,37 @@ class API::V1::UsersController < ApplicationController
   # https://api.rubyonrails.org/classes/ActionController/RequestForgeryProtection/ClassMethods.html
   skip_before_action :verify_authenticity_token, only: [:create]
 
+  rescue_from ActiveRecord::RecordNotFound do |event|
+    render_json_error :not_found, :user_not_found, { user_id: event.id }
+  end
+
   def index
     users = User.all
-    render json: users, adapter: :json_api, status: 200
+    # what is adapter: json_api
+    # render json: users, adapter: :json_api, status: 200
+    render json: users, status: 200
   end
 
   def show
     user = User.find(params[:id])
-    render json: user, adapter: :json_api, status: 200
+    render json: user, status: 200
   end
 
   def create
     user = User.new(user_params)
     if user.save
-      render json: user, adapter: :json_api, status: 200
+      render json: user, status: 201
     else
-      render json: user.errors, status: :unprocessable_entity
+      render_json_validation_error user
     end
   end
 
   def update
     user = User.find(params[:id])
     if user.update(user_params)
-      render json: user, adapter: :json_api, status: 200
+      render json: { message: 'User successfully updated' }, status: 204
+    else
+      render_json_error user, { id: params[:id] }
     end
   end
 
@@ -46,5 +54,5 @@ class API::V1::UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email)
-   end
+  end
 end
