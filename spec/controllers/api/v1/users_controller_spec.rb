@@ -129,7 +129,8 @@ RSpec.describe API::V1::UsersController, type: :controller do
       before { put :update, params: inValid_attributes }
 
       it 'Returns an error' do
-        expect(json['errors'][0]['title']).to eq('Could not find user 999')
+        expect(json['errors'][0]['title']).to eq('Could not find user')
+        expect(json['errors'][0]['user_id']).to eq(inValid_attributes[:id].to_s)
       end
 
       it 'returns correct status code' do
