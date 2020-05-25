@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :api, path: '' do
     namespace :v1 do
       resources :users
+      resources :divings
     end
   end
 end

@@ -2,23 +2,21 @@
 
 require 'rails_helper'
 
-RSpec.describe API::V1::UsersController, type: :controller do
+RSpec.describe API::V1::DivingsController, type: :controller do
   # initialize test data
-  let!(:users) { create_list(:user, 5) }
-  let(:user_id) { users.first.id }
+  let!(:divings) { create_list(:diving, 5) }
+  let(:diving_id) { divings.first.id }
 
   before do
     # sign_in_user(admin_user)
   end
 
-  # Test suite for GET /users
-  describe 'GET /v1/users' do
+  describe 'GET /v1/divings' do
     before { get :index }
-    # before { get '/v1/users' }
 
-    it 'returns users' do
+    it 'returns divings' do
       expect(json).not_to be_empty
-      expect(json['users'].size).to eq(5)
+      expect(json.size).to eq(5)
     end
 
     it 'returns status code 200' do
@@ -26,14 +24,14 @@ RSpec.describe API::V1::UsersController, type: :controller do
     end
   end
 
-  # Test suite for GET /userss/:id
-  describe 'GET /users/:id' do
-    before { get :show, params: { id: user_id } }
+  # Test suite for GET /divings/:id
+  describe 'GET /divings/:id' do
+    before { get :show, params: { id: diving_id } }
 
     context 'when the record exists' do
-      it 'returns the user' do
+      it 'returns the diving' do
         expect(json).not_to be_empty
-        expect(json['user']['id']).to eq(user_id)
+        expect(json['id']).to eq(diving_id)
       end
 
       it 'returns status code 200' do
@@ -42,33 +40,32 @@ RSpec.describe API::V1::UsersController, type: :controller do
     end
 
     context 'when the record does not exist' do
-      let(:user_id) { 100 }
+      let(:diving_id) { 100 }
 
       it 'returns status code 404' do
         expect(response).to have_http_status(404)
       end
 
       it 'returns a not found message' do
-        expect(json['errors'][0].keys.include?('user_id')).to be(true)
-        expect(json['errors'][0]['title']).to match('Could not find user')
+        expect(json['errors'][0].keys.include?('diving_id')).to be(true)
+        expect(json['errors'][0]['title']).to match('Could not find diving')
       end
     end
   end
 
-  # Test suite for POST /users
-  describe 'POST /users' do
-    # valid payload
+  describe 'POST /divings' do
     let(:valid_attributes) do
-      { user: { first_name: 'Test',
-                last_name: 'Name',
-                email: 'test.name@email.com' } }
+      { diving: { title: 'test title',
+                  price: 18.99,
+                  description: 'test description' } }
     end
 
     context 'when the request is valid' do
       before { post :create, params: valid_attributes }
 
-      it 'creates a user' do
-        expect(json['user']['first_name']).to eq('Test')
+      it 'creates a diving' do
+        new_diving_record = Diving.all.last
+        expect(new_diving_record.title).to eq(valid_attributes[:diving][:title])
       end
 
       it 'returns status code 201' do
@@ -78,8 +75,7 @@ RSpec.describe API::V1::UsersController, type: :controller do
 
     context 'when the request is invalid' do
       let(:invalid_attributes) do
-        { user: { first_name: 'Test',
-                  last_name: 'Name' } }
+        { diving: { title: 'Test Title' } }
       end
 
       before { post :create, params: invalid_attributes }
@@ -91,28 +87,29 @@ RSpec.describe API::V1::UsersController, type: :controller do
       it 'returns a validation failure message' do
         expect(json['errors'][0]['detail'])
           .to include("can't be blank")
+        # TODO: I would really like this to say Price can't be blank, need to high jack validation error
       end
     end
   end
 
-  # Test suite for PUT /todos/:id
-  describe 'PUT /users/:id' do
+  # Test suite for PUT /divings/:id
+  describe 'PUT /divings/:id' do
     context 'when the record exists' do
       let(:valid_attributes) do
         {
-          id: user_id,
-          user: { first_name: 'Changed' }
+          id: diving_id,
+          diving: { price: 20.99 }
         }
       end
       before { put :update, params: valid_attributes }
 
       it 'updates the record' do
-        updated_user = User.find_by_id(user_id)
-        expect(updated_user.first_name).to eq(valid_attributes[:user][:first_name])
+        updated_diving = Diving.find_by_id(diving_id)
+        expect(updated_diving.price).to eq(valid_attributes[:diving][:price])
       end
 
       it 'Expect correct response message' do
-        expect(json['message']).to eq('User successfully updated')
+        expect(json['message']).to eq('Diving successfully updated')
       end
 
       it 'returns status code 204' do
@@ -124,14 +121,14 @@ RSpec.describe API::V1::UsersController, type: :controller do
       let(:inValid_attributes) do
         {
           id: 999,
-          user: { first_name: 'Changed' }
+          diving: { title: 'Changed test title' }
         }
       end
       before { put :update, params: inValid_attributes }
 
       it 'Returns an error' do
-        expect(json['errors'][0]['title']).to eq('Could not find user')
-        expect(json['errors'][0]['user_id']).to eq(inValid_attributes[:id].to_s)
+        expect(json['errors'][0]['title']).to eq('Could not find diving')
+        expect(json['errors'][0]['diving_id']).to eq(inValid_attributes[:id].to_s)
       end
 
       it 'returns correct status code' do
@@ -140,15 +137,14 @@ RSpec.describe API::V1::UsersController, type: :controller do
     end
   end
 
-  describe 'DELETE /users/:id' do
-    it 'deletes the user' do
+  describe 'DELETE /divings/:id' do
+    it 'deletes the diving' do
       expect do
-        delete :destroy, params: { id: user_id }
-      end.to change(User, :count).by(-1)
+        delete :destroy, params: { id: diving_id }
+      end.to change(Diving, :count).by(-1)
     end
 
     it 'returns status code 200' do
-      # check to make sure the records are one less. I think there is a method to do this
       expect(response).to have_http_status(200)
     end
   end
