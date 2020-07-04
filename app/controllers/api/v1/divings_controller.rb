@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class API::V1::UsersController < ApplicationController
+class API::V1::DivingsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   # FIXME: this seems very very bad
   # https://appsignal.com/for/invalid_authenticity_token
@@ -8,51 +8,52 @@ class API::V1::UsersController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create]
 
   rescue_from ActiveRecord::RecordNotFound do |event|
-    render_json_error :not_found, :user_not_found, { user_id: event.id }
+    render_json_error :not_found, :diving_not_found, { diving_id: event.id }
   end
 
   def index
-    users = User.all
+    divings = Diving.all
     # what is adapter: json_api
     # render json: users, adapter: :json_api, status: 200
-    render json: users, status: 200
+    render json: divings, status: 200
   end
 
   def show
-    user = User.find(params[:id])
-    render json: user, status: 200
+    diving = Diving.find(params[:id])
+    render json: diving, status: 200
   end
 
   def create
-    user = User.new(user_params)
-    if user.save
-      render json: user, status: 201
+    diving = Diving.new(diving_params)
+    if diving.save
+      render json: diving, status: 201
     else
-      render_json_validation_error user
+      render_json_validation_error diving
     end
   end
 
   def update
-    user = User.find(params[:id])
-    if user.update(user_params)
-      render json: { message: 'User successfully updated' }, status: 204
+    diving = Diving.find(params[:id])
+    if diving.update(diving_params)
+      render json: { message: 'Diving successfully updated' }, status: 204
     else
       render_json_error user, { id: params[:id] }
     end
   end
 
   def destroy
-    user = User.find(params[:id])
-    render json: user, adapter: :json_api, status: 200 if user.destroy!
+    diving = Diving.find(params[:id])
+    render json: diving, adapter: :json_api, status: 200 if diving.destroy!
   end
 
   private
 
+  # TODO: this needs to be moved outta here
   def record_not_found
     render json: { message: 'Record Not Found!' }, adapter: :json_api, status: 404
   end
 
-  def user_params
-    params.require(:user).permit(:first_name, :last_name, :email)
+  def diving_params
+    params.require(:diving).permit(:title, :price, :description)
   end
 end
