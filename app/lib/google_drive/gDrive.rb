@@ -7,6 +7,7 @@ module Image
   # Documents for this gem
   # https://www.rubydoc.info/gems/google_drive
 
+  # TODO: seems I only need private key and email for this to work in the config.js file
   def self.images
     # Creates a session. This will prompt the credential via command line for the
     # first time and save it to config.json file for later usages.
@@ -30,7 +31,7 @@ module Image
                   name: file.name,
                   mimeType: file.mime_type,
                   webViewLink: file.web_view_link,
-                  webContectLink: file.web_content_link,
+                  webContentLink: file.web_content_link,
                   parents: file.parents
                 })
     end
