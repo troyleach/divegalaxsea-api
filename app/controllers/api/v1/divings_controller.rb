@@ -1,15 +1,10 @@
 # frozen_string_literal: true
 
 class API::V1::DivingsController < ApplicationController
-  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   # FIXME: this seems very very bad
   # https://appsignal.com/for/invalid_authenticity_token
   # https://api.rubyonrails.org/classes/ActionController/RequestForgeryProtection/ClassMethods.html
   skip_before_action :verify_authenticity_token, only: [:create]
-
-  rescue_from ActiveRecord::RecordNotFound do |event|
-    render_json_error :not_found, :diving_not_found, { diving_id: event.id }
-  end
 
   def index
     divings = Diving.all
@@ -47,11 +42,6 @@ class API::V1::DivingsController < ApplicationController
   end
 
   private
-
-  # TODO: this needs to be moved outta here
-  def record_not_found
-    render json: { message: 'Record Not Found!' }, adapter: :json_api, status: 404
-  end
 
   def diving_params
     params.require(:diving).permit(:title, :price, :description)

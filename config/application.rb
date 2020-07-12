@@ -17,5 +17,12 @@ module DivegalaxseaApi
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    # NOTE: maybe only run this in test mode? see what the evn is then if test run this?
+    # seems to work in develop
+    # https://stackoverflow.com/questions/57277351/rails-6-zeitwerknameerror-doesnt-load-class-from-module
+    # I did this so the tests would work
+    p 'My env is TEST' if Rails.env === 'test'
+    config.autoloader = :classic
   end
 end

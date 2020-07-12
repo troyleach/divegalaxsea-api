@@ -49,8 +49,7 @@ RSpec.describe API::V1::UsersController, type: :controller do
       end
 
       it 'returns a not found message' do
-        expect(json['errors'][0].keys.include?('user_id')).to be(true)
-        expect(json['errors'][0]['title']).to match('Could not find user')
+        expect(json['message']).to eq("Couldn't find User with 'id'=100")
       end
     end
   end
@@ -130,8 +129,7 @@ RSpec.describe API::V1::UsersController, type: :controller do
       before { put :update, params: inValid_attributes }
 
       it 'Returns an error' do
-        expect(json['errors'][0]['title']).to eq('Could not find user')
-        expect(json['errors'][0]['user_id']).to eq(inValid_attributes[:id].to_s)
+        expect(json['message']).to eq("Couldn't find User with 'id'=999")
       end
 
       it 'returns correct status code' do

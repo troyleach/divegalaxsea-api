@@ -17,6 +17,9 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 require 'capybara/rspec' # Not sure this is in the right place
+require 'webmock/rspec' # to mock external api calls - NOTE: this will intercept ALL external api calls
+WebMock.disable_net_connect!(allow_localhost: true)
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -95,4 +98,19 @@ RSpec.configure do |config|
   #   # test failures related to randomization by passing the same `--seed` value
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
+
+  config.before(:each) do |_config|
+    # Stubbing out the google drive api call
+    stub_request(:post, 'https://www.googleapis.com/oauth2/v4/token')
+      .with(
+        body: { 'assertion' => 'eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJkZXZlbG9wLWRpdmVnYWxheHNlYUBhcGktcHJvamVjdC0xNzE2NzA2MDIwNDUuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJhdWQiOiJodHRwczovL3d3dy5nb29nbGVhcGlzLmNvbS9vYXV0aDIvdjQvdG9rZW4iLCJleHAiOjE1OTQ0ODI2MzIsImlhdCI6MTU5NDQ4MjUxMiwic2NvcGUiOiJodHRwczovL3d3dy5nb29nbGVhcGlzLmNvbS9hdXRoL2RyaXZlIGh0dHBzOi8vc3ByZWFkc2hlZXRzLmdvb2dsZS5jb20vZmVlZHMvIn0.S9KNpPyUZ2RXO5jz522b5RRcfxajgiNUVCXSV35k57oF2iEiQ1ohjLbyaVQeONwTX7QWoz10U2fYbHGB9L8blY926TzkKqJGDHkf2imjhFpYL-Gs5SQH2K0DlepsogpDpms7DxOLhE0i4HSGV6CTVkry0_S4cJXgxOByGEQcGv6UO3XSEW0S1mNEuqSZI2pxWkO9mkKKEO7B-5DmXke8y8jueyA6IUemc2LvBE1xhBVHW7OThXyhRMg42zC1aUo2ydaBFL5-A82OH9oSWDdvCxbJwqgK_6OEh23c0SWZVU4s8L65-A6C6oUePtOi2zSErqFC5iZxz6n_ghWoGSUzMw', 'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer' },
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type' => 'application/x-www-form-urlencoded',
+          'User-Agent' => 'Faraday v1.0.1'
+        }
+      )
+      .to_return(status: 200, body: '', headers: {})
+  end
 end

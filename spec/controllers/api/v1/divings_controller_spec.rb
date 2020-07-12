@@ -47,8 +47,7 @@ RSpec.describe API::V1::DivingsController, type: :controller do
       end
 
       it 'returns a not found message' do
-        expect(json['errors'][0].keys.include?('diving_id')).to be(true)
-        expect(json['errors'][0]['title']).to match('Could not find diving')
+        expect(json['message']).to eq("Couldn't find Diving with 'id'=100")
       end
     end
   end
@@ -80,7 +79,7 @@ RSpec.describe API::V1::DivingsController, type: :controller do
 
       before { post :create, params: invalid_attributes }
 
-      it 'returns status code 422' do
+      it 'returns status code 400' do
         expect(response).to have_http_status(400)
       end
 
@@ -127,8 +126,7 @@ RSpec.describe API::V1::DivingsController, type: :controller do
       before { put :update, params: inValid_attributes }
 
       it 'Returns an error' do
-        expect(json['errors'][0]['title']).to eq('Could not find diving')
-        expect(json['errors'][0]['diving_id']).to eq(inValid_attributes[:id].to_s)
+        expect(json['message']).to eq("Couldn't find Diving with 'id'=999")
       end
 
       it 'returns correct status code' do

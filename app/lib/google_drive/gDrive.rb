@@ -16,11 +16,12 @@ module Image
     #   "my-service-account-xxxxxxxxxxxx.json")
     # https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md
     # session = GoogleDrive::Session.from_config('./config.json')
+
     google_drive_session = GoogleDrive::Session.from_service_account_key(
       'app/lib/google_drive/api-project-171670602045.json'
     )
+
     objs = []
-    # fields: 'files(id, name, mimeType, webViewLink, webContentLink, parents)',
     # Gets list of remote files.
     google_drive_session.files.each do |file|
       # file.class === GoogleDrive::File
