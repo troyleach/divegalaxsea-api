@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users
       resources :divings
+      get '/google_drive_images' => 'google_drive_images#index'
     end
   end
 end

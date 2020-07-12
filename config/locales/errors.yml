@@ -2,10 +2,10 @@ en:
   error_messages:
     user_not_found:
       code: 404
-      title: "Could not find user"
+      title: "User not found"
       detail: "This user does not exist, or has been deleted."
     
     diving_not_found:
       code: 404
-      title: "Could not find diving"
+      title: "Diving not found"
       detail: "This diving does not exist, or has been deleted."

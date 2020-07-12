@@ -1,15 +1,10 @@
 # frozen_string_literal: true
 
 class API::V1::UsersController < ApplicationController
-  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   # FIXME: this seems very very bad
   # https://appsignal.com/for/invalid_authenticity_token
   # https://api.rubyonrails.org/classes/ActionController/RequestForgeryProtection/ClassMethods.html
   skip_before_action :verify_authenticity_token, only: [:create]
-
-  rescue_from ActiveRecord::RecordNotFound do |event|
-    render_json_error :not_found, :user_not_found, { user_id: event.id }
-  end
 
   def index
     users = User.all
