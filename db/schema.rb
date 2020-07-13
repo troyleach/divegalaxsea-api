@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_19_150833) do
+ActiveRecord::Schema.define(version: 2020_07_12_213349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,6 +18,38 @@ ActiveRecord::Schema.define(version: 2020_04_19_150833) do
   create_table "divings", force: :cascade do |t|
     t.string "title"
     t.decimal "price", precision: 8, scale: 2
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "miscellaneous_pricings", force: :cascade do |t|
+    t.string "title"
+    t.decimal "price"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "rentals", force: :cascade do |t|
+    t.string "title"
+    t.decimal "price"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "specialties", force: :cascade do |t|
+    t.string "title"
+    t.decimal "price"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "trainings", force: :cascade do |t|
+    t.string "title"
+    t.decimal "price"
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -32,4 +64,17 @@ ActiveRecord::Schema.define(version: 2020_04_19_150833) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "vacations", force: :cascade do |t|
+    t.bigint "user_id"
+    t.text "dates_array", default: [], array: true
+    t.jsonb "diving_objects", default: {}
+    t.jsonb "training_objects", default: {}
+    t.integer "number_of_divers"
+    t.string "resort"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_vacations_on_user_id"
+  end
+
+  add_foreign_key "vacations", "users"
 end
