@@ -2,19 +2,19 @@
 
 require 'rails_helper'
 
-RSpec.describe API::V1::TrainingsController, type: :controller do
+RSpec.describe API::V1::RentalsController, type: :controller do
   # initialize test data
-  let!(:trainings) { create_list(:training, 5) }
-  let(:training_id) { trainings.first.id }
+  let!(:rentals) { create_list(:rental, 5) }
+  let(:rental_id) { rentals.first.id }
 
   before do
     # sign_in_user(admin_user)
   end
 
-  describe 'GET /v1/trainings' do
+  describe 'GET /v1/rentals' do
     before { get :index }
 
-    it 'returns trainings' do
+    it 'returns all rentals' do
       expect(json).not_to be_empty
       expect(json.size).to eq(5)
     end
@@ -24,13 +24,13 @@ RSpec.describe API::V1::TrainingsController, type: :controller do
     end
   end
 
-  describe 'GET /trainings/:id' do
-    before { get :show, params: { id: training_id } }
+  describe 'GET /rentals/:id' do
+    before { get :show, params: { id: rental_id } }
 
     context 'when the record exists' do
-      it 'returns the training' do
+      it 'returns the rental' do
         expect(json).not_to be_empty
-        expect(json['id']).to eq(training_id)
+        expect(json['id']).to eq(rental_id)
       end
 
       it 'returns status code 200' do
@@ -39,29 +39,29 @@ RSpec.describe API::V1::TrainingsController, type: :controller do
     end
 
     context 'when the record does not exist' do
-      let(:training_id) { 100 }
+      let(:rental_id) { 100 }
 
       it 'returns status code 404' do
         expect(response).to have_http_status(404)
       end
 
       it 'returns a not found message' do
-        expect(json['message']).to eq("Couldn't find Training with 'id'=100")
+        expect(json['message']).to eq("Couldn't find Rental with 'id'=100")
       end
     end
   end
 
-  describe 'POST /training' do
+  describe 'POST /rental' do
     let(:valid_attributes) do
-      { training: { title: 'training test title',
-                    price: 18.99,
-                    description: 'training test description' } }
+      { rental: { title: 'rental test title',
+                  price: 18.99,
+                  description: 'rental test description' } }
 
       context 'when the request is valid' do
         before { post :create, params: valid_attributes }
 
         it 'creates a user' do
-          expect(json['training']['title']).to eq(valid_attributes[:training[:title]])
+          expect(json['rental']['title']).to eq(valid_attributes[:rental[:title]])
         end
 
         it 'returns status code 201' do
@@ -71,8 +71,8 @@ RSpec.describe API::V1::TrainingsController, type: :controller do
 
       context 'when the request is invalid' do
         let(:invalid_attributes) do
-          { training: { title: 'training test title',
-                        description: 'training test description' } }
+          { rental: { title: 'rental test title',
+                      description: 'rental test description' } }
         end
 
         before { post :create, params: invalid_attributes }
@@ -88,23 +88,23 @@ RSpec.describe API::V1::TrainingsController, type: :controller do
       end
     end
 
-    describe 'PUT /trainings/:id' do
+    describe 'PUT /rentals/:id' do
       context 'when the record exists' do
         let(:valid_attributes) do
           {
-            id: training_id,
-            training: { title: 'title Changed' }
+            id: rental_id,
+            rental: { title: 'title Changed' }
           }
         end
         before { put :update, params: valid_attributes }
 
         it 'updates the record' do
-          updated_training = Training.find_by_id(training_id)
-          expect(updated_training.title).to eq(valid_attributes[:training][:title])
+          updated_rental = Rental.find_by_id(rental_id)
+          expect(updated_rental.title).to eq(valid_attributes[:rental][:title])
         end
 
         it 'Expect correct response message' do
-          expect(json['message']).to eq('Training successfully updated')
+          expect(json['message']).to eq('Rental successfully updated')
         end
 
         it 'returns status code 204' do
@@ -116,13 +116,13 @@ RSpec.describe API::V1::TrainingsController, type: :controller do
         let(:inValid_attributes) do
           {
             id: 999,
-            training: { title: 'Title Changed' }
+            rental: { title: 'Title Changed' }
           }
         end
         before { put :update, params: inValid_attributes }
 
         it 'Returns an error' do
-          expect(json['message']).to eq("Couldn't find Training with 'id'=999")
+          expect(json['message']).to eq("Couldn't find Rental with 'id'=999")
         end
 
         it 'returns correct status code' do
@@ -131,11 +131,11 @@ RSpec.describe API::V1::TrainingsController, type: :controller do
       end
     end
 
-    describe 'DELETE /trainings/:id' do
-      it 'deletes the training' do
+    describe 'DELETE /rental/:id' do
+      it 'deletes the rental' do
         expect do
-          delete :destroy, params: { id: training_id }
-        end.to change(Training, :count).by(-1)
+          delete :destroy, params: { id: rental_id }
+        end.to change(Rental, :count).by(-1)
       end
 
       it 'returns status code 200' do
