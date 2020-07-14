@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       resources :divings
       resources :trainings
       resources :rentals
+      resources :specialties
       get '/google_drive_images' => 'google_drive_images#index'
     end
   end
