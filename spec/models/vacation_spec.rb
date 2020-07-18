@@ -32,7 +32,7 @@ RSpec.describe Vacation, type: :model do
       it 'Vacation is valid with out training' do
         vacation = Vacation.new(user_id: @user.id,
                                 dates_array: [Time.now.utc],
-                                diving_objects: [{}],
+                                diving_objects: [{ "title": 'title of diving' }],
                                 number_of_divers: 5,
                                 resort: 'Test resort name')
         expect(vacation).to be_valid
