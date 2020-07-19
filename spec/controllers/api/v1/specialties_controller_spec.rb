@@ -56,35 +56,35 @@ RSpec.describe API::V1::SpecialtiesController, type: :controller do
       { specialty: { title: 'rental test title',
                      price: 18.99,
                      description: 'specialty test description' } }
+    end
 
-      context 'when the request is valid' do
-        before { post :create, params: valid_attributes }
+    context 'when the request is valid' do
+      before { post :create, params: valid_attributes }
 
-        it 'creates a specialty' do
-          expect(json['specialty']['title']).to eq(valid_attributes[:specialty[:title]])
-        end
-
-        it 'returns status code 201' do
-          expect(response).to have_http_status(201)
-        end
+      it 'creates a specialty' do
+        expect(json['title']).to eq(valid_attributes[:specialty][:title])
       end
 
-      context 'when the request is invalid' do
-        let(:invalid_attributes) do
-          { specialty: { title: 'specialty test title',
-                         description: 'specialty test description' } }
-        end
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
 
-        before { post :create, params: invalid_attributes }
+    context 'when the request is invalid' do
+      before(:all) do
+        @valid_object = { specialty: { title: 'specialty test title',
+                                       description: 'specialty test description' } }
+      end
 
-        it 'returns status code 422' do
-          expect(response).to have_http_status(400)
-        end
+      before { post :create, params: @valid_object }
 
-        it 'returns a validation failure message' do
-          expect(json['errors'][0]['detail'])
-            .to include("can't be blank")
-        end
+      it 'returns status code 422' do
+        expect(response).to have_http_status(400)
+      end
+
+      it 'returns a validation failure message' do
+        expect(json['errors'][0]['detail'])
+          .to include("can't be blank")
       end
     end
 

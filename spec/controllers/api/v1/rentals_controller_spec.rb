@@ -56,35 +56,35 @@ RSpec.describe API::V1::RentalsController, type: :controller do
       { rental: { title: 'rental test title',
                   price: 18.99,
                   description: 'rental test description' } }
+    end
 
-      context 'when the request is valid' do
-        before { post :create, params: valid_attributes }
+    context 'when the request is valid' do
+      before { post :create, params: valid_attributes }
 
-        it 'creates a user' do
-          expect(json['rental']['title']).to eq(valid_attributes[:rental[:title]])
-        end
-
-        it 'returns status code 201' do
-          expect(response).to have_http_status(201)
-        end
+      it 'creates a user' do
+        expect(json['title']).to eq(valid_attributes[:rental][:title])
       end
 
-      context 'when the request is invalid' do
-        let(:invalid_attributes) do
-          { rental: { title: 'rental test title',
-                      description: 'rental test description' } }
-        end
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
 
-        before { post :create, params: invalid_attributes }
+    context 'when the request is invalid' do
+      let(:invalid_attributes) do
+        { rental: { title: 'rental test title',
+                    description: 'rental test description' } }
+      end
 
-        it 'returns status code 422' do
-          expect(response).to have_http_status(400)
-        end
+      before { post :create, params: invalid_attributes }
 
-        it 'returns a validation failure message' do
-          expect(json['errors'][0]['detail'])
-            .to include("can't be blank")
-        end
+      it 'returns status code 422' do
+        expect(response).to have_http_status(400)
+      end
+
+      it 'returns a validation failure message' do
+        expect(json['errors'][0]['detail'])
+          .to include("can't be blank")
       end
     end
 

@@ -32,7 +32,7 @@ class API::V1::TrainingsController < ApplicationController
     if training.update(training_params)
       render json: { message: 'Training successfully updated' }, status: 204
     else
-      render_json_error user, { id: params[:id] }
+      render_json_error training, { id: params[:id] }
     end
   end
 

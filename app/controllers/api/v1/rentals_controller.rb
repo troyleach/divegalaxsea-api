@@ -19,7 +19,7 @@ class API::V1::RentalsController < ApplicationController
   end
 
   def create
-    rental = Rental.new(training_params)
+    rental = Rental.new(rental_params)
     if rental.save
       render json: rental, status: 201
     else
