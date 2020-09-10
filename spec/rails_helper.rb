@@ -54,6 +54,9 @@ RSpec.configure do |config|
   # config.include RequestSpecHelper, type: :request
   config.include RequestSpecHelper
 
+  # include the request helper data
+  config.include RequestDataSpecHelper
+
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.

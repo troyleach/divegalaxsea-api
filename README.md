@@ -24,3 +24,13 @@ Things you may want to cover:
 * ...
 Faker
 https://github.com/faker-ruby/faker
+
+* Testing
+
+### Factory Bot
+[Factory Bot repo](https://github.com/thoughtbot/factory_bot/wiki)
+[Factory Bot cheat sheet](https://devhints.io/factory_bot)
+
+### Mocking
+[webmock](https://github.com/bblimke/webmock)
+[video on mocking](https://www.youtube.com/watch?v=Okck4Fc557o)

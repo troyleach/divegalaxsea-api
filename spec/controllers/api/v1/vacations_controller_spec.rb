@@ -55,6 +55,11 @@ RSpec.describe API::V1::VacationsController, type: :controller do
   end
 
   describe 'POST /vacation' do
+    # TODO:
+    # - first off needs to be reservation
+    # - Make a through table for users_reservation that will tie the user to the reservation
+    # - then creates reservation (vacation)
+
     let(:user) { create(:user) }
     let(:dates) { [(Date.today + 1.day), (Date.today + 1.day)].map(&:to_s) }
     let(:valid_attributes) do
@@ -68,7 +73,6 @@ RSpec.describe API::V1::VacationsController, type: :controller do
 
     context 'when the request is valid' do
       before { post :create, params: valid_attributes }
-      # FIXME: I have to make a through table so that i can save ids NOT the objects
       it 'creates a vacation' do
         expect(json['user_id'])
           .to eq(user.id)
@@ -106,6 +110,34 @@ RSpec.describe API::V1::VacationsController, type: :controller do
         # FIXME: make sure this returns a usefully error
         expect(json['errors'][0]['detail'])
           .to include("can't be blank")
+      end
+    end
+
+    describe 'A new user creates a reservation' do
+      context 'negitive results' do
+        it 'expect a 400 bad request missing keys' do
+        end
+        it 'expect a 400 missing attribute' do
+        end
+      end
+
+      context 'positive results' do
+        # this might be a good read
+        # https://medium.com/@TressaSanders/how-to-build-a-booking-system-with-ruby-on-rails-part-1-d9d57ed94d32
+
+        it 'expect a user to be created' do
+          expect do
+            post :create, params: reservation_data
+          end.to change(User, :count).by(1)
+          expect(response).to have_http_status(201)
+        end
+
+        it 'expect a reservation to be created' do
+          # TODO: change to reservation
+          expect do
+            post :create, params: reservation_data
+          end.to change(Vacation, :count).by(1)
+        end
       end
     end
 
