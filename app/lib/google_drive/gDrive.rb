@@ -7,25 +7,30 @@ module Image
   # Documents for this gem
   # https://www.rubydoc.info/gems/google_drive
 
-  # TODO: seems I only need private key and email for this to work in the config.js file
   def self.images
-    # Creates a session. This will prompt the credential via command line for the
-    # first time and save it to config.json file for later usages.
-    # See this document to learn how to create config.json:
-    # session = GoogleDrive::Session.from_service_account_key(
-    #   "my-service-account-xxxxxxxxxxxx.json")
     # https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md
     # session = GoogleDrive::Session.from_config('./config.json')
 
+    # https://blog.saeloun.com/2019/10/10/rails-6-adds-support-for-multi-environment-credentials.html
+    private_key = Rails.application.credentials.config[:google_drive][:private_key]
+    client_email = Rails.application.credentials.config[:google_drive][:client_email]
+
+    config_hash = { "private_key": private_key, "client_email": client_email }
+
+    # https://mauricio.github.io/2014/08/03/quick-tips-for-doing-io-with-ruby.html search for StringIO
+    # https://www.rubyguides.com/2017/05/stringio-objects/
+    io_like_object = StringIO.new(config_hash.to_json)
+
+    # https://www.rubydoc.info/gems/google_drive/GoogleDrive/Session
+    # This method is expecting a file. I did not want my keys exposed so I had to use
+    # IO-like object.
     google_drive_session = GoogleDrive::Session.from_service_account_key(
-      'app/lib/google_drive/api-project-171670602045.json'
+      io_like_object
     )
 
     objs = []
     # Gets list of remote files.
     google_drive_session.files.each do |file|
-      # file.class === GoogleDrive::File
-
       objs.push({
                   id: file.id,
                   kind: file.kind,
@@ -37,18 +42,17 @@ module Image
                 })
     end
 
-    parentFolders = objs.find { |folder| !folder[:parents] } # for future features
-    subFolders = objs.filter do |folder|
+    parent_folders = objs.find { |folder| !folder[:parents] } # for future features
+    sub_folders = objs.filter do |folder|
       folder[:mimeType] == 'application/vnd.google-apps.folder' &&
         folder[:parents]
     end
 
     objs.group_by { |file| file[:parents] && file[:parents][0] }
         .map do |id, images|
-      result = subFolders.find { |sub_folder_id| sub_folder_id[:id] == id }
-      result_two = subFolders.pluck { |sub_folder_id| sub_folder_id[:id] == id }
-      folderName = result[:name] if id && result
-      folderName ? { folderName => images } : next
+      result = sub_folders.find { |sub_folder_id| sub_folder_id[:id] == id }
+      folder_name = result[:name] if id && result
+      folder_name ? { folder_name => images } : next
     end.compact # compact removes null from the array
   end
 end
