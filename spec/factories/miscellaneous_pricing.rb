@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :diving do
+  factory :miscellaneousPricing do
     title { 'title' }
     price { 4.99 }
-    description { 'diving description' }
+    description { 'Miscellaneous pricing description' }
   end
 end

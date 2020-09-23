@@ -8,9 +8,7 @@ class API::V1::DivingsController < ApplicationController
 
   def index
     divings = Diving.all
-    # what is adapter: json_api
-    # render json: users, adapter: :json_api, status: 200
-    render json: divings, status: 200
+    render json: divings, adapter: :json_api, status: 200
   end
 
   def show
