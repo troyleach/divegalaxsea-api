@@ -5,15 +5,15 @@
 
 User.create([
               {
-                first_name: Carrie,
-                last_name: Blackburn,
-                email: carrie@email.com,
+                first_name: 'Carrie',
+                last_name: 'Blackburn',
+                email: 'carrie@email.com',
                 admin: false
               },
               {
-                first_name: Courtney,
-                last_name: Rivera,
-                email: courtney@email.com,
+                first_name: 'Courtney',
+                last_name: 'Rivera',
+                email: 'courtney@email.com',
                 admin: false
               },
               {
