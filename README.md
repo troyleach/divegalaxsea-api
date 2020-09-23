@@ -1,51 +1,94 @@
-# README
+# DIVEGALAXSEA-API
+[divegalaxsea.com](http://divegalaxsea.com/)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails version
+```
+rails 6.0.2
+```
 
-Things you may want to cover:
+Ruby version
 
-* Ruby version
+```
+  ruby 2.7.0p0
+```
 
-* System dependencies
+## Install dependencies
 
-* Configuration
-Setting up project environment variables
-https://blog.saeloun.com/2019/10/10/rails-6-adds-support-for-multi-environment-credentials.html
+```
+bundle && yarn
+```
 
-* Database creation
+## Configuration
 
-* Database initialization
+* More to come...
 
-* How to run the test suite
+## Initialize the database
 
-* Services (job queues, cache servers, search engines, etc.)
+```
+rails db:create db:migrate db:seed
+```
 
-* Deployment instructions
 
-* ...
+## Services (job queues, cache servers, search engines, etc.)
 
-* Testing
+* none at this time
 
-Avoid using Faker. This creates data that is not testable because the data
+### Deployment instructions
+
+* More to come...
+
+# Serve
+```
+rails s
+```
+
+# Testing
+
+#### How to run the test suite
+
+```
+bundle exec rspec
+```
+Run individual test suite
+```
+bundle exec rspec spec/controllers/api/v1/users_controller_spec.rb
+```
+Run individual test
+```
+bundle exec rspec spec/controllers/api/v1/users_controller_spec.rb:14
+```
+
+> Avoid using Faker. This creates data that is not testable because the data
 is not consistent. 
-Faker
-https://github.com/faker-ruby/faker
+
+[Faker](https://github.com/faker-ruby/faker)
+
 
 ### Test coverage
-To see the test coverage run:
-`open coverage/index.html` if in a mac terminal
-note: if this is your first time opening this app you will need to run bundel exec rspec then run the above command
 [simmplecov](https://github.com/simplecov-ruby/simplecov)
 
+To see the test coverage run:
+In a mac terminal
 
-### Factory Bot
+```
+open coverage/index.html
+```
+
+* note: if this is your first time opening this app you will need to run bundel exec rspec then run the above command
+
+
+
+#### Factory Bot
 [Factory Bot repo](https://github.com/thoughtbot/factory_bot/wiki)
+
 [Factory Bot cheat sheet](https://devhints.io/factory_bot)
 
-### Mocking
+#### Mocking
 [webmock](https://github.com/bblimke/webmock)
+
 [video on mocking](https://www.youtube.com/watch?v=Okck4Fc557o)
 
-#### Resources
+# Resources
 [Ruby on Rails testing: RSpec configuration](https://hixonrails.com/ruby-on-rails-tutorials/ruby-on-rails-testing-rspec-configuration/)
+
+[Enviroonment credentials](https://blog.saeloun.com/2019/10/10/rails-6-adds-support-for-multi-environment-credentials.html)
