@@ -5,15 +5,15 @@
 
 User.create([
               {
-                first_name: Faker::Name.first_name,
-                last_name: Faker::Name.last_name,
-                email: Faker::Internet.email,
+                first_name: Carrie,
+                last_name: Blackburn,
+                email: carrie@email.com,
                 admin: false
               },
               {
-                first_name: Faker::Name.first_name,
-                last_name: Faker::Name.last_name,
-                email: Faker::Internet.email,
+                first_name: Courtney,
+                last_name: Rivera,
+                email: courtney@email.com,
                 admin: false
               },
               {

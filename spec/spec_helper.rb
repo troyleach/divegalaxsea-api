@@ -19,6 +19,20 @@
 require 'capybara/rspec' # Not sure this is in the right place
 require 'webmock/rspec' # to mock external api calls - NOTE: this will intercept ALL external api calls
 require 'pry'
+require 'simplecov'
+SimpleCov.start do
+  add_filter '/test/'
+  add_filter '/config/'
+  add_filter '/vendor/'
+
+  add_group 'Controllers', 'app/controllers'
+  add_group 'Models', 'app/models'
+  add_group 'Helpers', 'app/helpers'
+  add_group 'Mailers', 'app/mailers'
+end
+# This outputs the report to your public folder
+# You will want to add this to .gitignore
+SimpleCov.coverage_dir 'public/coverage'
 
 WebMock.disable_net_connect!(allow_localhost: true)
 

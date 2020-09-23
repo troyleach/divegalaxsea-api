@@ -24,13 +24,19 @@ https://blog.saeloun.com/2019/10/10/rails-6-adds-support-for-multi-environment-c
 * Deployment instructions
 
 * ...
-Try to avoid using Faker. This creates data that is not testable because the data
-is not consistent. 
-Faker
-
-https://github.com/faker-ruby/faker
 
 * Testing
+
+Avoid using Faker. This creates data that is not testable because the data
+is not consistent. 
+Faker
+https://github.com/faker-ruby/faker
+
+### Test coverage
+To see the test coverage run:
+`open coverage/index.html` if in a mac terminal
+note: if this is your first time opening this app you will need to run bundel exec rspec then run the above command
+[simmplecov](https://github.com/simplecov-ruby/simplecov)
 
 
 ### Factory Bot
@@ -40,3 +46,6 @@ https://github.com/faker-ruby/faker
 ### Mocking
 [webmock](https://github.com/bblimke/webmock)
 [video on mocking](https://www.youtube.com/watch?v=Okck4Fc557o)
+
+#### Resources
+[Ruby on Rails testing: RSpec configuration](https://hixonrails.com/ruby-on-rails-tutorials/ruby-on-rails-testing-rspec-configuration/)
