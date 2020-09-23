@@ -18,6 +18,8 @@
 
 require 'capybara/rspec' # Not sure this is in the right place
 require 'webmock/rspec' # to mock external api calls - NOTE: this will intercept ALL external api calls
+require 'pry'
+
 WebMock.disable_net_connect!(allow_localhost: true)
 
 RSpec.configure do |config|

@@ -28,9 +28,16 @@ module Image
       io_like_object
     )
 
+    objs = format_data(google_drive_session.files)
+    serialized_data = serialize_data(objs)
+
+    serialized_data
+  end
+
+  def self.format_data(data)
     objs = []
     # Gets list of remote files.
-    google_drive_session.files.each do |file|
+    data.each do |file|
       objs.push({
                   id: file.id,
                   kind: file.kind,
@@ -41,18 +48,30 @@ module Image
                   parents: file.parents
                 })
     end
+    objs
+  end
 
-    parent_folders = objs.find { |folder| !folder[:parents] } # for future features
-    sub_folders = objs.filter do |folder|
-      folder[:mimeType] == 'application/vnd.google-apps.folder' &&
-        folder[:parents]
-    end
-
-    objs.group_by { |file| file[:parents] && file[:parents][0] }
+  def self.serialize_data(data)
+    parent_folders = find_parent_folders(data) # This is for future feature
+    sub_folders = find_sub_folders(data)
+    data.group_by { |file| file[:parents] && file[:parents][0] }
         .map do |id, images|
       result = sub_folders.find { |sub_folder_id| sub_folder_id[:id] == id }
       folder_name = result[:name] if id && result
       folder_name ? { folder_name => images } : next
     end.compact # compact removes null from the array
   end
+
+  def self.find_parent_folders(data)
+    data.find { |folder| !folder[:parents] } # for future features
+  end
+
+  def self.find_sub_folders(data)
+    data.filter do |folder|
+      folder[:mimeType] == 'application/vnd.google-apps.folder' &&
+        folder[:parents]
+    end
+  end
+
+  private_class_method :find_parent_folders, :find_sub_folders, :format_data, :serialize_data
 end

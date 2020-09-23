@@ -10,6 +10,8 @@ Things you may want to cover:
 * System dependencies
 
 * Configuration
+Setting up project environment variables
+https://blog.saeloun.com/2019/10/10/rails-6-adds-support-for-multi-environment-credentials.html
 
 * Database creation
 
@@ -22,10 +24,14 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+Try to avoid using Faker. This creates data that is not testable because the data
+is not consistent. 
 Faker
+
 https://github.com/faker-ruby/faker
 
 * Testing
+
 
 ### Factory Bot
 [Factory Bot repo](https://github.com/thoughtbot/factory_bot/wiki)
