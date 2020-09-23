@@ -3,20 +3,24 @@
 require 'rails_helper'
 require_relative '../../../app/lib/google_drive/gDrive.rb'
 
-# RSpec.describe Image do
 describe 'Image' do
   xit 'returns the correct formated data from google drive' do
     data = File.read('./spec/fixtures/google_drive_data.json')
     google_drive_response = JSON.parse(data)
-    allow(GoogleDrive::Session)
-      .to receive(:from_service_account_key)
-      .and_return(google_drive_response)
+    # Need to chain the calls
+    # https://stackoverflow.com/questions/41990298/webmock-and-hash-issues
+    stub_request(:any, 'https://www.googleapis.com/drive/v3/files?fields=%2A&includeItemsFromAllDrives=true&supportsAllDrives=true')
+      .to_return(status: 200, body: google_drive_response)
+    # data = File.read('./spec/fixtures/google_drive_data.json')
+    # google_drive_response = JSON.parse(data)
+    # allow(GoogleDrive::Session)
+    #   .to receive(:from_service_account_key)
+    #   .and_return(google_drive_response)
 
     images = Image.images
     expect(images).to eq(false)
   end
 end
-# end
 
 # [{:id=>"1y7MHIl8cfQ_KiC2I4Pj5JzzbUBCzACPh",
 #   :kind=>"drive#file",

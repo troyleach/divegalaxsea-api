@@ -122,9 +122,6 @@ RSpec.describe API::V1::VacationsController, type: :controller do
       end
 
       context 'positive results' do
-        # this might be a good read
-        # https://medium.com/@TressaSanders/how-to-build-a-booking-system-with-ruby-on-rails-part-1-d9d57ed94d32
-
         it 'expect a user to be created' do
           expect do
             post :create, params: reservation_data
