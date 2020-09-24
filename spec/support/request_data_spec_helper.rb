@@ -7,7 +7,8 @@ module RequestDataSpecHelper
       "user": {
         "first_name": 'pam',
         "last_name": 'baker',
-        "email": 'pam.backer@email.com'
+        "email": 'pam.backer@email.com',
+        "admin": false
       },
       "vacation": {
         "number_of_divers": 3,
@@ -25,7 +26,7 @@ module RequestDataSpecHelper
           "price": 9.99,
           "description": 'training description'
         }],
-        "dates_array": %w[2020-07-20 2020-07-20]
+        "dates_array": %w[2020-07-20 2020-07-23]
       }
     }
   end

@@ -12,35 +12,35 @@ Ruby version
   ruby 2.7.0p0
 ```
 
-## Install dependencies
+### Install dependencies
 
 ```
 bundle && yarn
 ```
 
-## Configuration
+### Configuration
 
 * More to come...
 
-## Initialize the database
+### Initialize the database
 
 ```
 rails db:create db:migrate db:seed
 ```
 
-
-## Services (job queues, cache servers, search engines, etc.)
-
-* none at this time
-
-### Deployment instructions
-
-* More to come...
-
 # Serve
 ```
 rails s
 ```
+
+
+# Services (job queues, cache servers, search engines, etc.)
+
+* none at this time
+
+# Deployment instructions
+
+* More to come...
 
 # Testing
 
