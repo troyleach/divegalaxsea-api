@@ -18,14 +18,13 @@ class API::V1::VacationsController < ApplicationController
   end
 
   def create
-    vacation_params_clone = vacation_params.clone
-
-    if vacation_params_clone[:user_id].nil?
-      user = User.create!(params[:user].as_json)
-      vacation_params_clone = vacation_params_clone.merge!(user_id: user.id)
+    if vacation_params['user_id'].nil?
+      params.permit! # I do not understand this
+      user = User.create!(params['user'])
+      params['vacation'].merge!(user_id: user.id)
     end
 
-    vacation = Vacation.new(vacation_params_clone)
+    vacation = Vacation.new(vacation_params)
     if vacation.save
       render json: vacation, status: 201
     else
