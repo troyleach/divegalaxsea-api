@@ -13,6 +13,8 @@ module DivegalaxseaApi
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
+    # Trying to debug what is happening on Heroku, seem I get this this deployed
+    Rails.autoloaders.logger = method(:puts)
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
@@ -23,6 +25,7 @@ module DivegalaxseaApi
     # https://stackoverflow.com/questions/57277351/rails-6-zeitwerknameerror-doesnt-load-class-from-module
     # I did this so the tests would work
     p 'My env is TEST' if Rails.env === 'test'
+    p 'My env is production' if Rails.env === 'production'
     if Rails.env === 'test'
       config.autoloader = :classic
     end
