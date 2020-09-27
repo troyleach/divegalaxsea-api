@@ -40,7 +40,8 @@ rails s
 
 # Deployment instructions
 Deployed to Heroku, only staging at the moment
-git push staging
+
+`git push staging`
 
 * More to come...
 
