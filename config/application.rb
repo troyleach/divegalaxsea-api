@@ -23,6 +23,8 @@ module DivegalaxseaApi
     # https://stackoverflow.com/questions/57277351/rails-6-zeitwerknameerror-doesnt-load-class-from-module
     # I did this so the tests would work
     p 'My env is TEST' if Rails.env === 'test'
-    config.autoloader = :classic
+    if Rails.env === 'test'
+      config.autoloader = :classic
+    end
   end
 end
