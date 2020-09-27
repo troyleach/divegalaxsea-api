@@ -29,8 +29,18 @@ rails db:create db:migrate db:seed
 ```
 
 # Serve
+Two options to local development:
+
 ```
 rails s
+http://localhost:3000/v1/users
+```
+
+OR
+
+```
+heroku local
+http://localhost:5000/v1/users
 ```
 
 
@@ -41,7 +51,7 @@ rails s
 # Deployment instructions
 Deployed to Heroku, only staging at the moment
 
-`git push staging master`
+`git push stg staging:master`
 
 * More to come...
 
