@@ -5,9 +5,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.0'
 
-# Database
-gem 'pg'
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.2', '>= 6.0.2.1'
 # Use Puma as the app server
@@ -66,6 +63,10 @@ group :test do
 end
 
 # User gems
+
+# Database
+gem 'pg'
+
 gem 'active_model_serializers', '~> 0.10.0'
 # sdk for accessing google drive information
 gem 'google_drive'
