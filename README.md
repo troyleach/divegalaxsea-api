@@ -39,6 +39,8 @@ rails s
 * none at this time
 
 # Deployment instructions
+Deployed to Heroku, only staging at the moment
+git push staging
 
 * More to come...
 
