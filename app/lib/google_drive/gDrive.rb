@@ -4,8 +4,8 @@
 # require 'google_drive'
 
 module Image
-  Documents for this gem
-  https://www.rubydoc.info/gems/google_drive
+  # Documents for this gem
+  # https://www.rubydoc.info/gems/google_drive
 
   def self.images
     # https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md
