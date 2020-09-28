@@ -26,8 +26,8 @@ module DivegalaxseaApi
     # I did this so the tests would work
     p 'My env is TEST' if Rails.env === 'test'
     p 'My env is production' if Rails.env === 'production'
-    if Rails.env === 'test'
-      config.autoloader = :classic
-    end
+    config.autoloader = :classic
+    # if Rails.env === 'test'
+    # end
   end
 end
