@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # I am reading that every file in lib folder will automaticly get loaded. require brakes stuff.
-# require 'google_drive'
+require 'google_drive'
 
 module Image
   # Documents for this gem
