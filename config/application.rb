@@ -21,13 +21,11 @@ module DivegalaxseaApi
     # the framework and any gems in your application.
 
     # NOTE: maybe only run this in test mode? see what the evn is then if test run this?
-    # seems to work in develop
+    # I ran into all kinds of issues deploying this to Heroku, once I set lin 30 the API deployed successfully
     # https://stackoverflow.com/questions/57277351/rails-6-zeitwerknameerror-doesnt-load-class-from-module
     # I did this so the tests would work
     p 'My env is TEST' if Rails.env === 'test'
     p 'My env is production' if Rails.env === 'production'
     config.autoloader = :classic
-    # if Rails.env === 'test'
-    # end
   end
 end

@@ -69,7 +69,7 @@ gem 'pg'
 
 gem 'active_model_serializers', '~> 0.10.0'
 # sdk for accessing google drive information
-# gem 'google_drive'
+gem 'google_drive'
 # Handle cross-origin resource sharing
 gem 'rack-cors'
 
