@@ -13,5 +13,11 @@ Rails.application.routes.draw do
       resources :miscellaneous_pricing
       get '/google_drive_images' => 'google_drive_images#index'
     end
+
+    namespace :v2 do
+      get '/' => 'dive_galaxsea#index'
+    end
   end
 end
+
+

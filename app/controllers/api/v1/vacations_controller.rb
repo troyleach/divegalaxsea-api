@@ -7,6 +7,7 @@ class API::V1::VacationsController < ApplicationController
   # https://api.rubyonrails.org/classes/ActionController/RequestForgeryProtection/ClassMethods.html
   skip_before_action :verify_authenticity_token, only: [:create]
   before_action :set_vacation, only: %i[show update destroy]
+  before_action :find_or_create_user, only: %i[create]
 
   def index
     vacations = Vacation.all
@@ -18,13 +19,8 @@ class API::V1::VacationsController < ApplicationController
   end
 
   def create
-    if vacation_params['user_id'].nil?
-      params.permit! # I do not understand this
-      user = User.create!(params['user'])
-      params['vacation'].merge!(user_id: user.id)
-    end
-
     vacation = Vacation.new(vacation_params)
+
     if vacation.save
       render json: vacation, status: 201
     else
@@ -49,6 +45,11 @@ class API::V1::VacationsController < ApplicationController
   def set_vacation
     # not positive this is the best solution or if this is the 'rails' way
     @vacation = Vacation.find(params[:id]) if params[:id]
+  end
+
+  def find_or_create_user
+    user = User.create_with(params['user'].as_json).find_or_create_by(email: params['user']['email'])
+    params['vacation'].merge!(user_id: user.id)
   end
 
   def vacation_params
