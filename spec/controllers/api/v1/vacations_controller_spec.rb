@@ -63,12 +63,32 @@ RSpec.describe API::V1::VacationsController, type: :controller do
     let(:user) { create(:user) }
     let(:dates) { [(Date.today + 1.day), (Date.today + 1.day)].map(&:to_s) }
     let(:valid_attributes) do
-      { vacation: { user_id: user.id,
-                    dates_array: dates,
-                    diving_objects: [{ title: 'title of diving', price: 10.99, description: 'diving description' }],
-                    training_objects: [{ title: 'title of training', price: 11.99 }, { title: 'title of training', price: 9.99, description: 'training description' }],
-                    number_of_divers: 5,
-                    resort: 'Test resort name' } }
+      {
+        "user": {
+          "first_name": user.first_name,
+          "last_name": user.last_name,
+          "email": user.email,
+          "admin": false
+        },
+        "vacation": {
+          "number_of_divers": 2,
+          "resort": "resort name goes here",
+          "diving_objects": [{
+            "title": "title of diving",
+            "price": 10.99,
+            "description": "diving description"
+          }],
+          "training_objects": [{
+            "title": "title of training",
+            "price": 11.99
+          }, {
+            "title": "title of training",
+            "price": 9.99,
+            "description": "training description"
+          }],
+          "dates_array": [(Date.today + 1.day), (Date.today + 1.day)].map(&:to_s)
+        }
+      }
     end
 
     context 'when the request is valid' do
@@ -83,7 +103,7 @@ RSpec.describe API::V1::VacationsController, type: :controller do
         expect(json['diving_objects'].size)
           .to eq(valid_attributes[:vacation][:diving_objects].size)
         expect(json['number_of_divers'])
-          .to eq(5)
+          .to eq(2)
       end
 
       it 'returns status code 201' do
@@ -93,11 +113,31 @@ RSpec.describe API::V1::VacationsController, type: :controller do
 
     context 'when the request is invalid' do
       let(:invalid_attributes) do
-        { vacation: { user_id: user.id,
-                      dates_array: [Time.now.utc],
-                      diving_objects: [{ title: 'title of diving' }],
-                      training_objects: [{ training: 'test training objects' }],
-                      number_of_divers: 5 } }
+        {
+        "user": {
+          "first_name": "charlie",
+          "last_name": "butternutr",
+          "email": "charlie@email.com",
+          "admin": false
+        },
+        "vacation": {
+          "number_of_divers": 2,
+          "diving_objects": [{
+            "title": "title of diving",
+            "price": 10.99,
+            "description": "diving description"
+          }],
+          "training_objects": [{
+            "title": "title of training",
+            "price": 11.99
+          }, {
+            "title": "title of training",
+            "price": 9.99,
+            "description": "training description"
+          }],
+          "dates_array": ["2021-07-20", "2021-07-27"]
+        }
+      }
       end
 
       before { post :create, params: invalid_attributes }
@@ -131,9 +171,12 @@ RSpec.describe API::V1::VacationsController, type: :controller do
 
         it 'expect a reservation to be created' do
           # TODO: change to reservation
+          users_before_post = User.all
           expect do
             post :create, params: reservation_data
           end.to change(Vacation, :count).by(1)
+          users_after_post = User.all
+          expect(users_before_post.length).to eq(users_after_post.length)
         end
       end
     end
